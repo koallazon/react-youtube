@@ -10,7 +10,7 @@ function App() {
   const onChangeSearchText = (text) => {
     console.log('app', text)
     if(text.trim() === '') return
-    fetch(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyDAf4Cvpj33KNirQCPGn18oFPqxV06Epno&part=snippet&maxResults=25&q=${text.trim()}`)
+    fetch(`https://www.googleapis.com/youtube/v3/search?key=123&part=snippet&maxResults=25&q=${text.trim()}`)
     .then((response) => response.json())
     .then((data) => {
       console.log('성공:', data);
