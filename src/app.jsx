@@ -2,11 +2,14 @@ import "./app.css"
 import React, { useState } from 'react';
 import Header from './components/header'
 import VideoList from './components/videoList'
-import { debounce } from 'lodash'
+import VideoPlay from './components/videoPlay'
 
 function App() {
   const [ items, setItems] = useState([]);
-  const onChangeSearchText = (text) => {
+  const [ mode, setMode] = useState('list');
+  const [ select, setSelect] = useState(null);
+
+  const onSearchContent = (text) => {
     console.log('app', text)
     if(text.trim() === '') return
     fetch(`https://www.googleapis.com/youtube/v3/search?key=${process.env.REACT_APP_YOUTUBE_API_KEY}&part=snippet&maxResults=25&q=${text.trim()}`)
@@ -17,13 +20,25 @@ function App() {
     })
     .catch((error) => {
       console.error('실패:', error);
-    });
-
+    }).finally(() => {
+      setMode('list')
+    })
   }
+
+  const onViewContent = (item) => {
+    console.log(item)
+    setSelect(item)
+    setMode('play')
+  }
+
   return (
     <div className="App">
-      <Header onChangeSearchText={debounce(onChangeSearchText, 500)} />
-      <VideoList items={items} />
+      <Header onSearchContent={onSearchContent} />
+      <div className="body-container">
+        {mode === 'play' && <VideoPlay item={select} />}
+        <VideoList items={items} onViewContent={onViewContent} mode={mode} />
+      </div>
+      
     </div>
   )
 }

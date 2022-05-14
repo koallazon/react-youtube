@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
 
 class videoItem extends Component {    
+    onViewContent = () => {
+        this.props.onViewContent(this.props.item)
+    }
+
     render() {
         const thumbnailStyle = {
             backgroundImage: `url('${this.props.item.snippet.thumbnails.high.url}')`,
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
-            flex: '0 0 300px',
-            width: '300px',
-            height: '168px',
-            borderRadius: '16px'
         }
+        
         return (
-            <li>
-                <div style={thumbnailStyle}>
-                    
-                </div>
+            <li onClick={this.onViewContent}>
+                <div style={thumbnailStyle} className="video-thumbnail"></div>
                 <div class="video-text-area">
                     <p class="video-title">{this.props.item.snippet.title}</p>
                     <p class="video-channel-title">{this.props.item.snippet.channelTitle}</p>
