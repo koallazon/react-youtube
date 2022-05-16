@@ -1,5 +1,5 @@
 import styles from  "./app.module.css"
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import SearchHeader from './components/search_header/search_header' 
 import VideoList from './components/video_list/video_list'
 import VideoDetail from './components/video_detail/video_detail'
@@ -11,20 +11,22 @@ function App({youtube}) {
   const selectVideo = (video) => {
     setSelectedVideo(video)
   }
-  const search = query => {
+
+  // useCallBack은 메모리상에 올라가기 때문에 적절하게 써야한다.
+  const search = useCallback(query => {
     youtube.search(query) //
     .then(videos => {
       setVideos(videos)
       setSelectedVideo(null)
     }).catch(err => console.log(err))
-  }
+  }, [youtube])
 
   useEffect(() => {
     youtube.mostPopular() //
     .then(videos => {
         setVideos(videos)
     }).catch(err => console.log(err))
-  }, [])
+  }, [youtube])
 
   return (
   <div className={styles.app}>
